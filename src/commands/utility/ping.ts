@@ -6,8 +6,12 @@ const ping: SlashCommand = {
         .setName("ping")
         .setDescription('Check if the bot is online, should reply with "Pong"'),
     execute: async (interaction) => {
-        const reply = await interaction.reply("Pong!");
-        await interaction.editReply(`Pong! (${reply.createdTimestamp - interaction.createdTimestamp}ms)`);
+        const response = await interaction.reply({ content: "Pong!", withResponse: true });
+        const roundtripLatency = response.resource?.message?.createdTimestamp
+            ? response.resource?.message?.createdTimestamp - interaction.createdTimestamp
+            : "?";
+        const websocketLatency = interaction.client.ws.ping;
+        await interaction.editReply(`Pong! (Roundtrip: ${roundtripLatency}ms, Websocket: ${websocketLatency}ms)`);
     },
 };
 

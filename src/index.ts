@@ -26,8 +26,8 @@ for (const folder of fs.readdirSync(commandsFolder)) {
     }
 }
 
-client.once(Events.ClientReady, (interaction) => {
-    console.log(`Client is ready as "${interaction.user.tag}"`);
+client.once(Events.ClientReady, (client) => {
+    console.log(`Client is ready as "${client.user.username}"`);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {

@@ -40,7 +40,7 @@ try {
 
     console.log(`Successfully registered all commands ${values.global ? "globally" : ""}`);
     console.log("Commands:");
-    commands.every((v) => console.log(v.name));
+    commands.forEach((v) => console.log(v.name));
 } catch (error) {
     console.error(error);
 }
