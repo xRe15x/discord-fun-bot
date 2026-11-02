@@ -1,7 +1,7 @@
 import path from "node:path";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
-import type { BaseCommand } from "./types/commandTypes.js";
+import type { AnyCommand } from "./types/commandTypes.js";
 import { REST, Routes } from "discord.js";
 import { parseArgs } from "node:util";
 
@@ -18,7 +18,7 @@ for (const folder of fs.readdirSync(commandsFolder)) {
         .filter((f) => f.endsWith(".js") || f.endsWith(".ts"));
     for (const file of files) {
         const filePath = path.join(commandsFolder, folder, file);
-        const importedFile: BaseCommand | undefined = (await import(pathToFileURL(filePath).href)).default;
+        const importedFile: AnyCommand | undefined = (await import(pathToFileURL(filePath).href)).default;
         if (importedFile && "data" in importedFile && "execute" in importedFile) {
             commands.push(importedFile.data.toJSON());
         } else {

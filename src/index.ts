@@ -1,7 +1,7 @@
 import { Client, Collection, CommandInteraction, Events, GatewayIntentBits, MessageFlags } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
-import type { BaseCommand } from "./types/commandTypes.js";
+import type { AnyCommand } from "./types/commandTypes.js";
 import { pathToFileURL } from "node:url";
 
 if (!process.env.TOKEN) throw new Error("Bot token is missing");
@@ -17,8 +17,10 @@ for (const folder of fs.readdirSync(commandsFolder)) {
         .filter((f) => f.endsWith(".js") || f.endsWith(".ts"));
     for (const file of files) {
         const filePath = path.join(commandsFolder, folder, file);
-        const importedFile: BaseCommand | undefined = (await import(pathToFileURL(filePath).href)).default;
+        const importedFile: AnyCommand | undefined = (await import(pathToFileURL(filePath).href)).default;
+
         if (importedFile && "data" in importedFile && "execute" in importedFile) {
+            importedFile.category = folder;
             client.commands.set(importedFile.data.name, importedFile);
         } else {
             throw new Error(`Command ${file} is missing data/execute`);
