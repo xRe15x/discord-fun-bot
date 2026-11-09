@@ -6,7 +6,9 @@ import { pathToFileURL } from "node:url";
 
 if (!process.env.TOKEN) throw new Error("Bot token is missing");
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+});
 client.commands = new Collection();
 
 // Add all commands to client.commands
