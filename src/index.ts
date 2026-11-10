@@ -16,7 +16,7 @@ const commandsFolder = path.join(import.meta.dirname, "commands");
 for (const folder of fs.readdirSync(commandsFolder)) {
     const files = fs
         .readdirSync(path.join(commandsFolder, folder))
-        .filter((f) => f.endsWith(".js") || f.endsWith(".ts"));
+        .filter((f) => (f.endsWith(".js") || f.endsWith(".ts")) && !f.endsWith(".d.ts"));
     for (const file of files) {
         const filePath = path.join(commandsFolder, folder, file);
         const importedFile: AnyCommand | undefined = (await import(pathToFileURL(filePath).href)).default;
